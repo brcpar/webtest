@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <input type="number" class="js-list-number" />
+    <button class="fetchList">Fetch List</button>
+    <ul id="list-wrap"></ul>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        function getList() {
+            var listId = $('.js-list-number').val();
+            $.ajax({
+                url: '/api/listing/list/' + listId,
+                method: 'POST',
+                success: function (resp) {
+                    var html = '';
+                    for (var i = 0; i < resp.length; i++) {
+                        html += '<li>' + resp.name + '</li>'
+                    }
+                    $('#list-wrap').html(html);
+                }
+            });
+        };
+
+        $('.fetchList').click(function (e) {
+            getList();
+        });
+    </script>
+}
